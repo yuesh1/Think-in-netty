@@ -19,7 +19,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
   private final ByteBuf firstMessage;
 
   public EchoClientHandler() {
-    firstMessage = Unpooled.wrappedBuffer("I am echo message".getBytes(StandardCharsets.UTF_8));
+    firstMessage = Unpooled.wrappedBuffer("I am echo message from client".getBytes(StandardCharsets.UTF_8));
   }
 
   @Override
