@@ -41,6 +41,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
     cause.printStackTrace();
-    ctx.flush();
+    ctx.close();
   }
 }

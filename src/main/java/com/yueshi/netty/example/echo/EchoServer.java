@@ -31,6 +31,7 @@ public class EchoServer {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
               ChannelPipeline pipeline = socketChannel.pipeline();
+              pipeline.addLast(new LoggingHandler(LogLevel.INFO));
               pipeline.addLast(handler);
             }
           });
