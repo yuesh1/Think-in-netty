@@ -1,5 +1,6 @@
-package com.yueshi.netty.bio;
+package com.yueshi.netty.iomode.fakeaio;
 
+import com.yueshi.netty.iomode.bio.TimeServerHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,35 +10,38 @@ import java.net.Socket;
  *
  * @author dengzihui
  * @version 1.0
- * @date 2021/5/11 9:27 PM
+ * @date 2021/6/1 8:40 PM
  */
 public class TimeServer {
 
   public static void main(String[] args) throws IOException {
-    int port = 8182;
-    if (null != args && args.length > 0) {
+    int port = 8181;
+    if (args != null && args.length > 0) {
       try {
         port = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
-        //不处理
+        e.printStackTrace();
       }
     }
+
     ServerSocket server = null;
-    try{
+
+    try {
       server = new ServerSocket(port);
-      System.out.println("Time Server is start at port : " + port);
+      System.out.println("The time server is start in port at {" + port + "}");
       Socket socket = null;
+      TimeServerHandlerExecutePool singleExecutor = new TimeServerHandlerExecutePool(
+          50, 10000);
       while (true) {
         socket = server.accept();
-        new Thread(new TimeServerHandler(socket)).start();
+        singleExecutor.execute(new TimeServerHandler(socket));
       }
     } finally {
-      if (null != server) {
-        System.out.println("The Time server close");
+      if (server != null) {
+        System.out.println("Time server closed!");
         server.close();
         server = null;
       }
     }
   }
-
 }

@@ -1,4 +1,4 @@
-package com.yueshi.netty.bio;
+package com.yueshi.netty.iomode.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
