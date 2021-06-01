@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * TimeClient
@@ -24,6 +25,75 @@ public class TimeClient {
         e.printStackTrace();
       }
     }
+    int finalPort = port;
+
+    long t1 = System.currentTimeMillis();
+
+    CompletableFuture.allOf(
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort)),
+        CompletableFuture.runAsync(() -> req(finalPort))
+    ).join();
+
+    long t2 = System.currentTimeMillis();
+
+    System.out.println("All task spend " + (t2 - t1) + " ms");
+  }
+
+  private static long req(int port) {
+    long t1 = System.currentTimeMillis();
     Socket socket = null;
     BufferedReader in = null;
     PrintWriter out = null;
@@ -59,6 +129,9 @@ public class TimeClient {
         socket = null;
       }
     }
+    long t2 = System.currentTimeMillis();
+    System.out.println("This req spend time is " + (t2 - t1) + "ms");
+    return t2 - t1;
   }
 }
 

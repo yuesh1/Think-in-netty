@@ -14,7 +14,7 @@ import java.net.Socket;
 public class TimeServer {
 
   public static void main(String[] args) throws IOException {
-    int port = 8182;
+    int port = 8181;
     if (null != args && args.length > 0) {
       try {
         port = Integer.parseInt(args[0]);
