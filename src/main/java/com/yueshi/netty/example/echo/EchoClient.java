@@ -20,27 +20,26 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class EchoClient {
 
-  public static void main(String[] args) throws InterruptedException {
-    NioEventLoopGroup env = new NioEventLoopGroup();
-    try {
-      Bootstrap bootstrap = new Bootstrap();
-      bootstrap.group(env)
-          .channel(NioSocketChannel.class)
-          .option(ChannelOption.TCP_NODELAY, true)
-          .handler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel socketChannel) throws Exception {
-              ChannelPipeline pipeline = socketChannel.pipeline();
-              pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-              pipeline.addLast(new EchoClientHandler());
-            }
-          });
+	public static void main(String[] args) throws InterruptedException {
+		NioEventLoopGroup env = new NioEventLoopGroup();
+		try {
+			Bootstrap bootstrap = new Bootstrap();
+			bootstrap.group(env).channel(NioSocketChannel.class).option(ChannelOption.TCP_NODELAY, true)
+					.handler(new ChannelInitializer<SocketChannel>() {
+						@Override
+						protected void initChannel(SocketChannel socketChannel) throws Exception {
+							ChannelPipeline pipeline = socketChannel.pipeline();
+							pipeline.addLast(new LoggingHandler(LogLevel.INFO));
+							pipeline.addLast(new EchoClientHandler());
+						}
+					});
 
-      ChannelFuture connect = bootstrap.connect("127.0.0.1", 8090);
-      connect.channel().closeFuture().sync();
-    } finally {
-      env.shutdownGracefully();
-    }
-  }
+			ChannelFuture connect = bootstrap.connect("127.0.0.1", 8090);
+			connect.channel().closeFuture().sync();
+		}
+		finally {
+			env.shutdownGracefully();
+		}
+	}
 
 }

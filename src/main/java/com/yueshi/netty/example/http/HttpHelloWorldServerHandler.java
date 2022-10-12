@@ -21,33 +21,32 @@ import java.nio.charset.StandardCharsets;
  */
 public class HttpHelloWorldServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
-  private static final byte[] CONTENT = "Hello World".getBytes(StandardCharsets.UTF_8);
+	private static final byte[] CONTENT = "Hello World".getBytes(StandardCharsets.UTF_8);
 
-  @Override
-  protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) {
-    if (httpObject instanceof HttpRequest) {
-      HttpRequest req = (HttpRequest) httpObject;
-      DefaultFullHttpResponse resp = new DefaultFullHttpResponse(
-          req.protocolVersion(), HttpResponseStatus.OK,
-          Unpooled.wrappedBuffer(CONTENT));
+	@Override
+	protected void channelRead0(ChannelHandlerContext channelHandlerContext, HttpObject httpObject) {
+		if (httpObject instanceof HttpRequest) {
+			HttpRequest req = (HttpRequest) httpObject;
+			DefaultFullHttpResponse resp = new DefaultFullHttpResponse(req.protocolVersion(), HttpResponseStatus.OK,
+					Unpooled.wrappedBuffer(CONTENT));
 
-      resp.headers()
-          .set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.TEXT_PLAIN)
-          .setInt(HttpHeaderNames.CONTENT_LENGTH, resp.content().readableBytes());
+			resp.headers().set(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.TEXT_PLAIN)
+					.setInt(HttpHeaderNames.CONTENT_LENGTH, resp.content().readableBytes());
 
-      ChannelFuture future = channelHandlerContext.write(resp);
+			ChannelFuture future = channelHandlerContext.write(resp);
 
-    }
-  }
+		}
+	}
 
-  @Override
-  public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-    ctx.flush();
-  }
+	@Override
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+		ctx.flush();
+	}
 
-  @Override
-  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-    cause.printStackTrace();
-    ctx.flush();
-  }
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		cause.printStackTrace();
+		ctx.flush();
+	}
+
 }

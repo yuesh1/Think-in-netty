@@ -13,31 +13,33 @@ import java.net.Socket;
  */
 public class TimeServer {
 
-  public static void main(String[] args) throws IOException {
-    int port = 8181;
-    if (null != args && args.length > 0) {
-      try {
-        port = Integer.parseInt(args[0]);
-      } catch (NumberFormatException e) {
-        //不处理
-      }
-    }
-    ServerSocket server = null;
-    try{
-      server = new ServerSocket(port);
-      System.out.println("Time Server is start at port : " + port);
-      Socket socket = null;
-      while (true) {
-        socket = server.accept();
-        new Thread(new TimeServerHandler(socket)).start();
-      }
-    } finally {
-      if (null != server) {
-        System.out.println("The Time server close");
-        server.close();
-        server = null;
-      }
-    }
-  }
+	public static void main(String[] args) throws IOException {
+		int port = 8181;
+		if (null != args && args.length > 0) {
+			try {
+				port = Integer.parseInt(args[0]);
+			}
+			catch (NumberFormatException e) {
+				// 不处理
+			}
+		}
+		ServerSocket server = null;
+		try {
+			server = new ServerSocket(port);
+			System.out.println("Time Server is start at port : " + port);
+			Socket socket = null;
+			while (true) {
+				socket = server.accept();
+				new Thread(new TimeServerHandler(socket)).start();
+			}
+		}
+		finally {
+			if (null != server) {
+				System.out.println("The Time server close");
+				server.close();
+				server = null;
+			}
+		}
+	}
 
 }

@@ -13,29 +13,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class TimeServer {
 
-  public static void main(String[] args) {
-    int port = 8183;
-    if (args != null && args.length > 0) {
-      try {
-        port = Integer.parseInt(args[0]);
-      } catch (NumberFormatException e) {
-        // ignore
-      }
-    }
+	public static void main(String[] args) {
+		int port = 8183;
+		if (args != null && args.length > 0) {
+			try {
+				port = Integer.parseInt(args[0]);
+			}
+			catch (NumberFormatException e) {
+				// ignore
+			}
+		}
 
-    MultiplexerTimeServer handler = new MultiplexerTimeServer(port);
-    new Thread(handler, "NIO-MultiplexerTimeServer-001").start();
+		MultiplexerTimeServer handler = new MultiplexerTimeServer(port);
+		new Thread(handler, "NIO-MultiplexerTimeServer-001").start();
 
-    ThreadPoolExecutor executor = new ThreadPoolExecutor(
-        2,
-        5,
-        120L,
-        TimeUnit.SECONDS,
-        new ArrayBlockingQueue<Runnable>(1024),
-        r -> new Thread(r, "NIO-MultiplexerTimeServerHandler-" + r.hashCode()),
-        new ThreadPoolExecutor.DiscardOldestPolicy());
-//      executor.execute(handler);
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 5, 120L, TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(1024),
+				r -> new Thread(r, "NIO-MultiplexerTimeServerHandler-" + r.hashCode()),
+				new ThreadPoolExecutor.DiscardOldestPolicy());
+		// executor.execute(handler);
 
-  }
+	}
 
 }
