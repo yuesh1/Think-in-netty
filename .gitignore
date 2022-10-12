@@ -2,3 +2,4 @@
 /target/
 *.iml
 /.idea/ThinkInNetty.iml
+.DS_Store
