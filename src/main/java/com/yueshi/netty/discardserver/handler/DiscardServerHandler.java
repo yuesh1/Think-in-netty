@@ -30,7 +30,19 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		// 直接丢弃到收到的数据
-		((ByteBuf) msg).release();
+		try {
+			ByteBuf in = (ByteBuf) msg;
+//			while (in.isReadable()) {
+//				System.out.println((char) in.readByte());
+//				System.out.flush();
+//			}
+
+			System.out.println(in.toString(io.netty.util.CharsetUtil.US_ASCII));
+		}
+		finally {
+			ReferenceCountUtil.release(msg);
+		}
+		// ((ByteBuf) msg).release();
 		// ReferenceCountUtil.release(msg);
 	}
 
