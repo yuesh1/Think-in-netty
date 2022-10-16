@@ -3,11 +3,13 @@ package com.yueshi.netty.fakewx.netty.server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -42,6 +44,26 @@ public class NettyServer {
 						});
 					}
 				});
+		serverBootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
+			@Override
+			protected void initChannel(NioSocketChannel ch) throws Exception {
+				System.out.println("启动过程中的的处理程序！");
+			}
+		});
+		// 给服务端的Channel（NioServerSocketChannel）制定一些自定义属性，然后可以通过channel的attr()取出这个属性
+		serverBootstrap.attr(AttributeKey.newInstance("serverName"), "NettyServer");
+		//给每一条连接指定自定义属性，后续可通过channel.attr()取出该属性
+		serverBootstrap.childAttr(AttributeKey.newInstance("clientKey"), "clientValue");
+		// 可以给每一条连接设置一些TCP底层相关的属性
+		// SO_KEEPALIVE - tcp底层心跳机制，true开启
+		// TCP_NODELAY - 表示是否开启Nagle算法，true表示关闭，false表示开启
+		// 通俗地说，如果要求高实时性，有数据发送时就马上发送，就关闭，如果需要减少发送次数减少网络交互，就开启。
+		serverBootstrap
+				.childOption(ChannelOption.SO_KEEPALIVE, true)
+						.childOption(ChannelOption.TCP_NODELAY, true);
+		// 给服务端channel设置一些属性
+		// 表示系统用于临时存放已完成三次握手的请求的队列的最大长度，如果连接建立频繁，服务器处理创建新连接较慢，可以适当调大这个参数
+		serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
 		bind(serverBootstrap, 22);
 	}
 
