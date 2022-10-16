@@ -32,10 +32,10 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
 		// 直接丢弃到收到的数据
 		try {
 			ByteBuf in = (ByteBuf) msg;
-//			while (in.isReadable()) {
-//				System.out.println((char) in.readByte());
-//				System.out.flush();
-//			}
+			// while (in.isReadable()) {
+			// System.out.println((char) in.readByte());
+			// System.out.flush();
+			// }
 
 			System.out.println(in.toString(io.netty.util.CharsetUtil.US_ASCII));
 		}

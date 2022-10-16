@@ -15,6 +15,7 @@ public class IOServer {
 		new Thread(() -> {
 			while (true) {
 				try {
+					// The method blocks until a connection is made. 阻塞方法
 					Socket accept = socket.accept();
 					new Thread(() -> {
 						try {
