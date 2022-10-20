@@ -35,21 +35,24 @@ public class NettyServer {
 				.childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new StringDecoder());
-						ch.pipeline().addLast(new SimpleChannelInboundHandler<String>() {
-							@Override
-							protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-								System.out.println(msg);
-							}
-						});
+						// ch.pipeline().addLast(new StringDecoder());
+						// ch.pipeline().addLast(new SimpleChannelInboundHandler<String>()
+						// {
+						// @Override
+						// protected void channelRead0(ChannelHandlerContext ctx, String
+						// msg) throws Exception {
+						// System.out.println(msg);
+						// }
+						// });
+						ch.pipeline().addLast(new FirstServerHandler());
 					}
 				});
-		serverBootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
-			@Override
-			protected void initChannel(NioSocketChannel ch) throws Exception {
-				System.out.println("启动过程中的的处理程序！");
-			}
-		});
+		// serverBootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
+		// @Override
+		// protected void initChannel(NioSocketChannel ch) throws Exception {
+		// System.out.println("启动过程中的的处理程序！");
+		// }
+		// });
 		// 给服务端的Channel（NioServerSocketChannel）制定一些自定义属性，然后可以通过channel的attr()取出这个属性
 		serverBootstrap.attr(AttributeKey.newInstance("serverName"), "NettyServer");
 		// 给每一条连接指定自定义属性，后续可通过channel.attr()取出该属性
@@ -61,8 +64,8 @@ public class NettyServer {
 		serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true).childOption(ChannelOption.TCP_NODELAY, true);
 		// 给服务端channel设置一些属性
 		// 表示系统用于临时存放已完成三次握手的请求的队列的最大长度，如果连接建立频繁，服务器处理创建新连接较慢，可以适当调大这个参数
-		serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
-		bind(serverBootstrap, 22);
+		serverBootstrap.option(ChannelOption.SO_BACKLOG, 8000);
+		bind(serverBootstrap, 8000);
 	}
 
 	/**
