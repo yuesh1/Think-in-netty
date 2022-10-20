@@ -73,3 +73,14 @@ NIO是面向Buffer的，可以读多次，不需要自己缓存数据，这一�
 - EventLoop/EventLoopGroup
 - BootStrap/ServerBootStrap
 - Feature/ChannelFeature
+
+
+## 4、ByteBuf内存数据的载体
+
+ByteBuf的两个指针以及两个指针划分出的三个空间
+- 读指针
+- 写指针
+- 废弃字节（已经读过的字节）
+- 可读空间（写指针与读指针之间的空间）
+- 可写空间（从写指针到容量之间的空间）
+
