@@ -38,8 +38,7 @@ public class NettyClient {
 		// 给客户端Channel（NioSocketChannel）绑定自定义属性，乐意通过channel.attr()取出这个属性
 		bootstrap.attr(AttributeKey.newInstance("clientName"), "nettyClient");
 		// 设置一些tcp底层的属性 连接的超时时间、是否开启TCP底层的心跳机制、Nagle算法
-		bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-				.option(ChannelOption.SO_KEEPALIVE, true)
+		bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000).option(ChannelOption.SO_KEEPALIVE, true)
 				.option(ChannelOption.TCP_NODELAY, true);
 
 		// 建立连接
@@ -61,12 +60,12 @@ public class NettyClient {
 				System.out.println("重试次数消耗完毕1");
 			}
 			else {
-				//第几次重连
+				// 第几次重连
 				int order = (MAX_RETRY - retry) + 1;
 				// 延迟时间
 				int delay = 1 << order;
 				System.err.println(new Date() + ": 连接失败，第" + order + "次重连……");
-				//BootstrapConfig 是对Bootstrap配置类的抽象
+				// BootstrapConfig 是对Bootstrap配置类的抽象
 				// group返回的是配置的线程模型 NioEventGroup
 				// group的schedule()调用定时逻辑
 				bootstrap.config().group().schedule(() -> connect(bootstrap, host, port, retry - 1), delay,
