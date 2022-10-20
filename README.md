@@ -67,3 +67,9 @@ NIO是面向Buffer的，可以读多次，不需要自己缓存数据，这一�
 - 线程模型
 - IO模型
 - 连接处理逻辑
+
+### Netty的核心组件
+- Channel/ServerChannel
+- EventLoop/EventLoopGroup
+- BootStrap/ServerBootStrap
+- Feature/ChannelFeature
