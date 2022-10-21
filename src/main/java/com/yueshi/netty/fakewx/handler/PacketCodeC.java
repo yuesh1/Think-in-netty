@@ -15,7 +15,9 @@ import lombok.Data;
  * @author: yuesh1 create: 2022-10-21 11:42
  */
 @Data
-public class PocketCodeC {
+public class PacketCodeC {
+
+	public static final PacketCodeC INSTANCE = new PacketCodeC();
 
 	private int MAGIC_NUMBER = 0x12345678;
 
@@ -34,13 +36,30 @@ public class PocketCodeC {
 
 	public ByteBuf encode(Packet packet) {
 		ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
-		byte[] bytes = Serializer.DEFAULT.serializer(packet);
+		byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
 		byteBuf.writeInt(MAGIC_NUMBER);
 		byteBuf.writeByte(packet.getVersion());
 		byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
 		byteBuf.writeByte(packet.getCommand());
 		byteBuf.writeByte(bytes.length);
+		byteBuf.writeBytes(bytes);
+
+		return byteBuf;
+	}
+
+	public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
+		// 1. 创建 ByteBuf 对象
+		ByteBuf byteBuf = byteBufAllocator.ioBuffer();
+		// 2. 序列化 java 对象
+		byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+		// 3. 实际编码过程
+		byteBuf.writeInt(MAGIC_NUMBER);
+		byteBuf.writeByte(packet.getVersion());
+		byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+		byteBuf.writeByte(packet.getCommand());
+		byteBuf.writeInt(bytes.length);
 		byteBuf.writeBytes(bytes);
 
 		return byteBuf;
@@ -61,7 +80,7 @@ public class PocketCodeC {
 		Class<? extends Packet> requestType = getRequestType(command);
 		Serializer serializer = getSerializer(serializerAlgorithm);
 		if (serializer != null && requestType != null) {
-			return serializer.deserializer(requestType, bytes);
+			return serializer.deserialize(requestType, bytes);
 		}
 		return null;
 	}
