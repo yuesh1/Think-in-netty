@@ -1,7 +1,11 @@
 package com.yueshi.netty.fakewx.client;
 
-import com.yueshi.netty.fakewx.handler.PacketCodeC;
-import com.yueshi.netty.fakewx.socket.packet.LoginRequestPacket;
+import com.yueshi.netty.fakewx.protocol.PacketCodeC;
+import com.yueshi.netty.fakewx.protocol.request.LoginRequestPacket;
+import com.yueshi.netty.fakewx.protocol.response.LoginResponsePacket;
+import com.yueshi.netty.fakewx.protocol.response.MessageResponsePacket;
+import com.yueshi.netty.fakewx.protocol.Packet;
+import com.yueshi.netty.fakewx.util.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -21,10 +25,28 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 		packet.setUsername("admin");
 		packet.setUserId(1);
 
-		PacketCodeC packetCodeC = new PacketCodeC();
-		// ByteBuf byteBuf = packetCodeC.encode(packet);
 		ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), packet);
 		ctx.channel().writeAndFlush(byteBuf);
+	}
+
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		ByteBuf byteBuf = (ByteBuf) msg;
+		Packet packet = PacketCodeC.INSTANCE.decode(byteBuf);
+		if (packet instanceof LoginResponsePacket) {
+			LoginResponsePacket p = (LoginResponsePacket) packet;
+			if (p.isSuccess()) {
+				System.out.println(new Date() + ": login success!");
+				LoginUtil.markAsLogin(ctx.channel());
+			}
+			else {
+				System.out.println(new Date() + ": login failure！ The reason is" + p.getReason());
+			}
+		}
+		else if (packet instanceof MessageResponsePacket) {
+			MessageResponsePacket p = (MessageResponsePacket) packet;
+			System.out.println(new Date() + "receive Server message, message is [ " + p.getMessage() + " ]");
+		}
 	}
 
 }

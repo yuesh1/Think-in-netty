@@ -1,10 +1,12 @@
-package com.yueshi.netty.fakewx.handler;
+package com.yueshi.netty.fakewx.protocol;
 
-import com.yueshi.netty.fakewx.socket.command.Command;
-import com.yueshi.netty.fakewx.socket.packet.LoginRequestPacket;
-import com.yueshi.netty.fakewx.socket.packet.Packet;
-import com.yueshi.netty.fakewx.socket.serializer.JSONSerializer;
-import com.yueshi.netty.fakewx.socket.serializer.Serializer;
+import com.yueshi.netty.fakewx.protocol.command.Command;
+import com.yueshi.netty.fakewx.protocol.request.LoginRequestPacket;
+import com.yueshi.netty.fakewx.protocol.response.LoginResponsePacket;
+import com.yueshi.netty.fakewx.protocol.request.MessageRequestPacket;
+import com.yueshi.netty.fakewx.protocol.response.MessageResponsePacket;
+import com.yueshi.netty.fakewx.serializer.JSONSerializer;
+import com.yueshi.netty.fakewx.serializer.Serializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import java.util.HashMap;
@@ -28,6 +30,9 @@ public class PacketCodeC {
 	static {
 		packetTypeMap = new HashMap<>();
 		packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+		packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+		packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+		packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
 		serializerMap = new HashMap<>();
 		Serializer serializer = new JSONSerializer();

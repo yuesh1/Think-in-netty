@@ -1,5 +1,6 @@
-package com.yueshi.netty.fakewx.socket.packet;
+package com.yueshi.netty.fakewx.protocol;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ public abstract class Packet {
 	/**
 	 * 协议版本
 	 */
+	@JSONField(deserialize = false, serialize = false)
 	private Byte version = 1;
 
 	/**

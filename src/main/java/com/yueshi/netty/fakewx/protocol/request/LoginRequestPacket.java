@@ -1,6 +1,7 @@
-package com.yueshi.netty.fakewx.socket.packet;
+package com.yueshi.netty.fakewx.protocol.request;
 
-import com.yueshi.netty.fakewx.socket.command.Command;
+import com.yueshi.netty.fakewx.protocol.command.Command;
+import com.yueshi.netty.fakewx.protocol.Packet;
 import lombok.Data;
 
 /**

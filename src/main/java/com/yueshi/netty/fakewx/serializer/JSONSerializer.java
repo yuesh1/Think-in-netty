@@ -1,6 +1,6 @@
-package com.yueshi.netty.fakewx.socket.serializer;
+package com.yueshi.netty.fakewx.serializer;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
 
 /**
  * @author: yuesh1 create: 2022-10-21 11:23

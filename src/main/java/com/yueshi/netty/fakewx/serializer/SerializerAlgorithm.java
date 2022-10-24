@@ -1,4 +1,4 @@
-package com.yueshi.netty.fakewx.socket.serializer;
+package com.yueshi.netty.fakewx.serializer;
 
 /**
  * @author: yuesh1 create: 2022-10-21 11:23

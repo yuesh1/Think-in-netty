@@ -2,12 +2,14 @@ package com.yueshi.netty.fakewx.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import java.util.Date;
 
 /**
  * @author: yuesh1 create: 2022-10-21 14:29
@@ -21,15 +23,18 @@ public class WxServer {
 		NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
 		bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-				.childHandler(new ChannelInitializer<NioSocketChannel>() {
+				.option(ChannelOption.SO_BACKLOG, 1024).childOption(ChannelOption.SO_KEEPALIVE, true)
+				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel ch) throws Exception {
 						ch.pipeline().addLast(new ServerHandler());
 					}
-				}).bind(8000).addListener(new GenericFutureListener<Future<? super Void>>() {
-					@Override
-					public void operationComplete(Future<? super Void> future) throws Exception {
-						System.out.println("server is start!");
+				}).bind(8000).addListener(future -> {
+					if (future.isSuccess()) {
+						System.out.println(new Date() + ": 端口 【" + 8000 + "】绑定成功！");
+					}
+					else {
+						System.out.println("绑定失败！");
 					}
 				});
 	}
