@@ -39,20 +39,6 @@ public class PacketCodeC {
 		serializerMap.put(serializer.getSerializerAlgorithm(), serializer);
 	}
 
-	public ByteBuf encode(Packet packet) {
-		ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
-		byte[] bytes = Serializer.DEFAULT.serialize(packet);
-
-		byteBuf.writeInt(MAGIC_NUMBER);
-		byteBuf.writeByte(packet.getVersion());
-		byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
-		byteBuf.writeByte(packet.getCommand());
-		byteBuf.writeByte(bytes.length);
-		byteBuf.writeBytes(bytes);
-
-		return byteBuf;
-	}
-
 	public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
 		// 1. 创建 ByteBuf 对象
 		ByteBuf byteBuf = byteBufAllocator.ioBuffer();
@@ -68,6 +54,17 @@ public class PacketCodeC {
 		byteBuf.writeBytes(bytes);
 
 		return byteBuf;
+	}
+
+	public void encode(Packet packet, ByteBuf out) {
+		byte[] bytes = Serializer.DEFAULT.serialize(packet);
+		//  实际编码过程
+		out.writeInt(MAGIC_NUMBER);
+		out.writeByte(packet.getVersion());
+		out.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+		out.writeByte(packet.getCommand());
+		out.writeInt(bytes.length);
+		out.writeBytes(bytes);
 	}
 
 	public Packet decode(ByteBuf byteBuf) {

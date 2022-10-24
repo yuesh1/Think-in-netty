@@ -2,6 +2,8 @@ package com.yueshi.netty.fakewx.client;
 
 import com.yueshi.netty.fakewx.protocol.PacketCodeC;
 import com.yueshi.netty.fakewx.protocol.request.MessageRequestPacket;
+import com.yueshi.netty.fakewx.server.PacketDecoder;
+import com.yueshi.netty.fakewx.server.PacketEncoder;
 import com.yueshi.netty.fakewx.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -29,7 +31,10 @@ public class WXClient {
 				.handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new ClientHandler());
+						ch.pipeline().addLast(new PacketDecoder());
+						ch.pipeline().addLast(new LoginResponseHandler());
+						ch.pipeline().addLast(new MessageResponseHandler());
+						ch.pipeline().addLast(new PacketEncoder());
 					}
 				});
 		connect(bootstrap, "127.0.0.1", 8000, 1);

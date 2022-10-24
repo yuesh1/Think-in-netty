@@ -24,7 +24,10 @@ public class WxServer {
 				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel ch) throws Exception {
-						ch.pipeline().addLast(new ServerHandler());
+						ch.pipeline().addLast(new PacketDecoder());
+						ch.pipeline().addLast(new LoginRequestHandler());
+						ch.pipeline().addLast(new MessageRequestHandler());
+						ch.pipeline().addLast(new PacketEncoder());
 					}
 				}).bind(8000).addListener(future -> {
 					if (future.isSuccess()) {
