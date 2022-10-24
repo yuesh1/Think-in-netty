@@ -1,6 +1,7 @@
 package com.yueshi.netty.fakewx.client;
 
 import com.yueshi.netty.fakewx.protocol.PacketCodeC;
+import com.yueshi.netty.fakewx.protocol.Spliter;
 import com.yueshi.netty.fakewx.protocol.request.MessageRequestPacket;
 import com.yueshi.netty.fakewx.server.PacketDecoder;
 import com.yueshi.netty.fakewx.server.PacketEncoder;
@@ -31,6 +32,7 @@ public class WXClient {
 				.handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
+						ch.pipeline().addLast(new Spliter());
 						ch.pipeline().addLast(new PacketDecoder());
 						ch.pipeline().addLast(new LoginResponseHandler());
 						ch.pipeline().addLast(new MessageResponseHandler());
@@ -69,10 +71,12 @@ public class WXClient {
 					Scanner sc = new Scanner(System.in);
 					String line = sc.nextLine();
 
-					MessageRequestPacket packet = new MessageRequestPacket();
-					packet.setMessage(line);
-					ByteBuf encode = PacketCodeC.INSTANCE.encode(channel.alloc(), packet);
-					channel.writeAndFlush(encode);
+					for (int i = 0; i < 1000; i++) {
+						MessageRequestPacket packet = new MessageRequestPacket();
+						packet.setMessage(line);
+						ByteBuf encode = PacketCodeC.INSTANCE.encode(channel.alloc(), packet);
+						channel.writeAndFlush(encode);
+					}
 				}
 			}
 		}).start();

@@ -37,8 +37,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 		return loginResponsePacket;
 	}
 
-
 	private boolean valid(LoginRequestPacket loginRequestPacket) {
 		return true;
 	}
-	}
+
+}

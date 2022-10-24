@@ -14,27 +14,28 @@ import java.util.Date;
  */
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
 
-  @Override
-  public void channelActive(ChannelHandlerContext ctx) throws Exception {
-    System.out.println(new Date() + ": client is start to login");
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		System.out.println(new Date() + ": client is start to login");
 
-    LoginRequestPacket packet = new LoginRequestPacket();
-    packet.setPwd("123456");
-    packet.setUsername("admin");
-    packet.setUserId(1);
+		LoginRequestPacket packet = new LoginRequestPacket();
+		packet.setPwd("123456");
+		packet.setUsername("admin");
+		packet.setUserId(1);
 
-    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), packet);
-    ctx.channel().writeAndFlush(byteBuf);
-  }
+		ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(ctx.alloc(), packet);
+		ctx.channel().writeAndFlush(byteBuf);
+	}
 
-  @Override
-  protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket msg) throws Exception {
-    if (msg.isSuccess()) {
-      System.out.println(new Date() + ": login success!");
-      LoginUtil.markAsLogin(ctx.channel());
-    }
-    else {
-      System.out.println(new Date() + ": login failure！ The reason is" + msg.getReason());
-    }
-  }
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket msg) throws Exception {
+		if (msg.isSuccess()) {
+			System.out.println(new Date() + ": login success!");
+			LoginUtil.markAsLogin(ctx.channel());
+		}
+		else {
+			System.out.println(new Date() + ": login failure！ The reason is" + msg.getReason());
+		}
+	}
+
 }

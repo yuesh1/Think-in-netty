@@ -21,7 +21,7 @@ public class PacketCodeC {
 
 	public static final PacketCodeC INSTANCE = new PacketCodeC();
 
-	private int MAGIC_NUMBER = 0x12345678;
+	public static int MAGIC_NUMBER = 0x12345678;
 
 	private static final Map<Byte, Class<? extends Packet>> packetTypeMap;
 
@@ -58,7 +58,7 @@ public class PacketCodeC {
 
 	public void encode(Packet packet, ByteBuf out) {
 		byte[] bytes = Serializer.DEFAULT.serialize(packet);
-		//  实际编码过程
+		// 实际编码过程
 		out.writeInt(MAGIC_NUMBER);
 		out.writeByte(packet.getVersion());
 		out.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
