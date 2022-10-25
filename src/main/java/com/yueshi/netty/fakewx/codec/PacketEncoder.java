@@ -1,7 +1,7 @@
-package com.yueshi.netty.fakewx.server;
+package com.yueshi.netty.fakewx.codec;
 
 import com.yueshi.netty.fakewx.protocol.Packet;
-import com.yueshi.netty.fakewx.protocol.PacketCodeC;
+import com.yueshi.netty.fakewx.codec.PacketCodeC;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

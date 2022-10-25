@@ -1,5 +1,10 @@
 package com.yueshi.netty.fakewx.server;
 
+import com.yueshi.netty.fakewx.codec.PacketDecoder;
+import com.yueshi.netty.fakewx.codec.PacketEncoder;
+import com.yueshi.netty.fakewx.server.handler.AuthHandler;
+import com.yueshi.netty.fakewx.server.handler.LoginRequestHandler;
+import com.yueshi.netty.fakewx.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -26,6 +31,7 @@ public class WxServer {
 					protected void initChannel(NioSocketChannel ch) throws Exception {
 						ch.pipeline().addLast(new PacketDecoder());
 						ch.pipeline().addLast(new LoginRequestHandler());
+						ch.pipeline().addLast(new AuthHandler());
 						ch.pipeline().addLast(new MessageRequestHandler());
 						ch.pipeline().addLast(new PacketEncoder());
 					}

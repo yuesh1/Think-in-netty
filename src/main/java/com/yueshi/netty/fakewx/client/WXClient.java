@@ -1,12 +1,12 @@
 package com.yueshi.netty.fakewx.client;
 
-import com.yueshi.netty.fakewx.protocol.PacketCodeC;
+import com.yueshi.netty.fakewx.client.handler.LoginResponseHandler;
+import com.yueshi.netty.fakewx.client.handler.MessageResponseHandler;
 import com.yueshi.netty.fakewx.protocol.request.MessageRequestPacket;
-import com.yueshi.netty.fakewx.server.PacketDecoder;
-import com.yueshi.netty.fakewx.server.PacketEncoder;
+import com.yueshi.netty.fakewx.codec.PacketDecoder;
+import com.yueshi.netty.fakewx.codec.PacketEncoder;
 import com.yueshi.netty.fakewx.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -68,11 +68,7 @@ public class WXClient {
 					System.out.println("Please input message to server");
 					Scanner sc = new Scanner(System.in);
 					String line = sc.nextLine();
-
-					MessageRequestPacket packet = new MessageRequestPacket();
-					packet.setMessage(line);
-					ByteBuf encode = PacketCodeC.INSTANCE.encode(channel.alloc(), packet);
-					channel.writeAndFlush(encode);
+					channel.writeAndFlush(new MessageRequestPacket(line));
 				}
 			}
 		}).start();

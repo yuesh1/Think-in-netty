@@ -1,4 +1,4 @@
-package com.yueshi.netty.fakewx.client;
+package com.yueshi.netty.fakewx.client.handler;
 
 import com.yueshi.netty.fakewx.protocol.response.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,10 +10,10 @@ import java.util.Date;
  */
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
 
-  @Override
-  protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg)
-      throws Exception {
+	@Override
+	protected void channelRead0(ChannelHandlerContext ctx, MessageResponsePacket msg) throws Exception {
 
-    System.out.println(new Date() + "receive Server message, message is [ " + msg.getMessage() + " ]");
-  }
+		System.out.println(new Date() + "receive Server message, message is [ " + msg.getMessage() + " ]");
+	}
+
 }
