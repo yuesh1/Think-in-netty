@@ -1,5 +1,6 @@
 package com.yueshi.netty.fakewx.server;
 
+import com.yueshi.netty.fakewx.general.LifeCycleTestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -24,6 +25,7 @@ public class WxServer {
 				.childOption(ChannelOption.TCP_NODELAY, true).childHandler(new ChannelInitializer<NioSocketChannel>() {
 					@Override
 					protected void initChannel(NioSocketChannel ch) throws Exception {
+						ch.pipeline().addLast(new LifeCycleTestHandler());
 						ch.pipeline().addLast(new PacketDecoder());
 						ch.pipeline().addLast(new LoginRequestHandler());
 						ch.pipeline().addLast(new MessageRequestHandler());
